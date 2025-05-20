@@ -2,11 +2,24 @@
 
 import Image from 'next/image';
 import { useCarrito } from '@/context/CarritoContext';
-import type { pastel } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
+
+interface Pastel {
+  id: number;
+  nombre: string;
+  descripcion: string | null;
+  precio: Decimal;
+  imagen: string | null;
+  destacado: boolean | null;
+  stock: number | null;
+  disponible: boolean | null;
+  fecha_creacion: Date | null;
+  deleted: boolean | null;
+}
 
 interface ProductosListaProps {
-  pasteles: pastel[];
-  pastelesDestacados: pastel[];
+  pasteles: Pastel[];
+  pastelesDestacados: Pastel[];
 }
 
 export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaProps) {
