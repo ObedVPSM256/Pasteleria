@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { ShoppingBag, X, Plus, Minus, CreditCard } from 'lucide-react';
 import { useCarrito } from '@/context/CarritoContext';
+import type { pastel } from '@prisma/client';
 
 interface CarritoLateralProps {
   isOpen: boolean;
@@ -16,7 +16,7 @@ export default function CarritoLateral({ isOpen, setIsOpen }: CarritoLateralProp
   // Si el panel no está abierto, no renderizar nada
   if (!isOpen) return null;
   
-  const total = carrito.reduce((sum, item) => sum + (item.precio * (item.cantidad || 1)), 0);
+  const total = carrito.reduce((sum, item) => sum + (Number(item.precio) * (item.cantidad || 1)), 0);
   
   return (
     <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-xl z-50 flex flex-col">
@@ -62,7 +62,7 @@ export default function CarritoLateral({ isOpen, setIsOpen }: CarritoLateralProp
                     <Image
                       width={80}
                       height={80} 
-                      src={item.imagen} 
+                      src={item.imagen || '/placeholder.jpg'} 
                       alt={item.nombre} 
                       className="w-full h-full object-cover"
                     />
@@ -71,7 +71,7 @@ export default function CarritoLateral({ isOpen, setIsOpen }: CarritoLateralProp
                   {/* Detalles del producto */}
                   <div className="flex-grow">
                     <h4 className="font-medium text-rose-900">{item.nombre}</h4>
-                    <p className="text-rose-600 font-semibold">${item.precio}</p>
+                    <p className="text-rose-600 font-semibold">${Number(item.precio)}</p>
                     
                     {/* Controles de cantidad */}
                     <div className="flex items-center mt-2 gap-2">
