@@ -2,11 +2,11 @@
 
 import Image from 'next/image';
 import { useCarrito } from '@/context/CarritoContext';
-import type { pastel } from '@prisma/client';
+import type { Pastel } from '@/types/pastel';
 
 interface ProductosListaProps {
-  pasteles: pastel[];
-  pastelesDestacados: pastel[];
+  pasteles: Pastel[];
+  pastelesDestacados: Pastel[];
 }
 
 export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaProps) {
