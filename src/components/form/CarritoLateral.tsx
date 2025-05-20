@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { ShoppingBag, X, Plus, Minus, CreditCard } from 'lucide-react';
 import { useCarrito } from '@/context/CarritoContext';
-import type { pastel } from '@prisma/client';
 
 interface CarritoLateralProps {
   isOpen: boolean;
