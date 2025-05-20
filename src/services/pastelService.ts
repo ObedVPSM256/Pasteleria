@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma';
 import type { pastel } from '@prisma/client';
-import { Prisma } from '@prisma/client';
 
 export const pastelService = {
   // Obtener todos los pasteles
