@@ -1,15 +1,20 @@
+"use client";
+
 import { useState } from 'react';
+import Image from 'next/image';
+import { X, Trash2, Plus, Minus } from 'lucide-react';
 import { useCarrito } from '@/context/CarritoContext';
-import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import { pedidoService } from '@/services/pedidoService';
 
 export function CarritoLateral() {
-  const { carrito, agregarAlCarrito, quitarDelCarrito, limpiarCarrito, total } = useCarrito();
+  const { carrito, eliminarDelCarrito, actualizarCantidad, limpiarCarrito } = useCarrito();
   const [isOpen, setIsOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [direccionEnvio, setDireccionEnvio] = useState('');
   const [instrucciones, setInstrucciones] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const total = carrito.reduce((sum, item) => sum + (item.precio * (item.cantidad || 1)), 0);
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,116 +54,96 @@ export function CarritoLateral() {
 
   return (
     <>
-      {/* Botón del carrito */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 bg-pink-600 text-white p-4 rounded-full shadow-lg hover:bg-pink-700 transition-colors z-50"
+        className="fixed bottom-4 right-4 bg-pink-600 text-white p-4 rounded-full shadow-lg hover:bg-pink-700 transition-colors"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
         {carrito.length > 0 && (
-          <span className="absolute -top-1 -right-1 bg-white text-pink-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
             {carrito.length}
           </span>
         )}
       </button>
 
-      {/* Panel lateral */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-          <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Tu Carrito</h2>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setIsOpen(false)} />
+          <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out">
+            <div className="p-4 border-b">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Carrito de Compras</h2>
+                <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-700">
                   <X size={24} />
                 </button>
               </div>
+            </div>
 
+            <div className="p-4 overflow-y-auto h-[calc(100vh-200px)]">
               {carrito.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">Tu carrito está vacío</p>
+                <p className="text-center text-gray-500">Tu carrito está vacío</p>
               ) : (
-                <>
-                  <div className="space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
-                    {carrito.map((item) => (
-                      <div key={item.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                        <img
+                <div className="space-y-4">
+                  {carrito.map((item) => (
+                    <div key={item.id} className="flex items-center gap-4 p-2 border rounded-lg">
+                      <div className="relative w-20 h-20">
+                        <Image
                           src={item.imagen}
                           alt={item.nombre}
-                          className="w-20 h-20 object-cover rounded"
+                          fill
+                          className="object-cover rounded-md"
                         />
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-800">{item.nombre}</h3>
-                          <p className="text-pink-600 font-bold">${item.precio}</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <button
-                              onClick={() => quitarDelCarrito(item.id)}
-                              className="p-1 hover:bg-gray-200 rounded"
-                            >
-                              <Minus size={16} />
-                            </button>
-                            <span className="w-8 text-center">{item.cantidad}</span>
-                            <button
-                              onClick={() => agregarAlCarrito(item)}
-                              className="p-1 hover:bg-gray-200 rounded"
-                            >
-                              <Plus size={16} />
-                            </button>
-                            <button
-                              onClick={() => quitarDelCarrito(item.id, true)}
-                              className="p-1 hover:bg-red-100 rounded ml-auto"
-                            >
-                              <Trash2 size={16} className="text-red-500" />
-                            </button>
-                          </div>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium">{item.nombre}</h3>
+                        <p className="text-pink-600 font-bold">${item.precio}</p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <button
+                            onClick={() => actualizarCantidad(item.id, (item.cantidad || 1) - 1)}
+                            className="p-1 rounded-full hover:bg-gray-100"
+                          >
+                            <Minus size={16} />
+                          </button>
+                          <span>{item.cantidad || 1}</span>
+                          <button
+                            onClick={() => actualizarCantidad(item.id, (item.cantidad || 1) + 1)}
+                            className="p-1 rounded-full hover:bg-gray-100"
+                          >
+                            <Plus size={16} />
+                          </button>
                         </div>
                       </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 border-t pt-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span className="font-bold">${total}</span>
+                      <button
+                        onClick={() => eliminarDelCarrito(item.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 size={20} />
+                      </button>
                     </div>
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-gray-600">Envío</span>
-                      <span className="text-green-600 font-bold">Gratis</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-6">
-                      <span className="text-lg font-bold">Total</span>
-                      <span className="text-2xl font-bold text-pink-600">${total}</span>
-                    </div>
-                    <button
-                      onClick={() => setShowCheckout(true)}
-                      className="w-full bg-pink-600 text-white py-3 rounded-lg hover:bg-pink-700 transition-colors"
-                    >
-                      Proceder al Pago
-                    </button>
-                  </div>
-                </>
+                  ))}
+                </div>
               )}
             </div>
+
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-white">
+              <div className="flex justify-between items-center mb-4">
+                <span className="font-semibold">Total:</span>
+                <span className="text-xl font-bold text-pink-600">${total}</span>
+              </div>
+              <button
+                onClick={() => setShowCheckout(true)}
+                className="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition-colors"
+                disabled={carrito.length === 0}
+              >
+                Proceder al Pago
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
-      {/* Formulario de pago */}
       {showCheckout && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
           <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl">
