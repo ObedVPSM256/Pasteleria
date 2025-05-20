@@ -1,22 +1,13 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from 'react';
+import type { pastel } from '@prisma/client';
 
-interface Pastel {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  imagen: string;
-  destacado: boolean;
-  etiquetas: string[];
-  calificacion: number;
-  cantidad?: number;
-}
+type PastelConCantidad = pastel & { cantidad?: number };
 
 interface CarritoContextType {
-  carrito: Pastel[];
-  agregarAlCarrito: (pastel: Pastel) => void;
+  carrito: PastelConCantidad[];
+  agregarAlCarrito: (pastel: pastel) => void;
   eliminarDelCarrito: (id: number) => void;
   actualizarCantidad: (id: number, cantidad: number) => void;
   limpiarCarrito: () => void;
@@ -25,9 +16,9 @@ interface CarritoContextType {
 const CarritoContext = createContext<CarritoContextType | undefined>(undefined);
 
 export function CarritoProvider({ children }: { children: ReactNode }) {
-  const [carrito, setCarrito] = useState<Pastel[]>([]);
+  const [carrito, setCarrito] = useState<PastelConCantidad[]>([]);
 
-  const agregarAlCarrito = (pastel: Pastel) => {
+  const agregarAlCarrito = (pastel: pastel) => {
     setCarrito((prevCarrito) => {
       const pastelExistente = prevCarrito.find((item) => item.id === pastel.id);
       if (pastelExistente) {

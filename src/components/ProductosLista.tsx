@@ -2,19 +2,11 @@
 
 import Image from 'next/image';
 import { useCarrito } from '@/context/CarritoContext';
-
-interface Pastel {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  imagen: string;
-  destacado: boolean;
-}
+import type { pastel } from '@prisma/client';
 
 interface ProductosListaProps {
-  pasteles: Pastel[];
-  pastelesDestacados: Pastel[];
+  pasteles: pastel[];
+  pastelesDestacados: pastel[];
 }
 
 export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaProps) {
@@ -30,7 +22,7 @@ export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaP
             <div key={pastel.id} className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
               <div className="relative w-full h-48">
                 <Image 
-                  src={pastel.imagen} 
+                  src={pastel.imagen || '/placeholder.jpg'} 
                   alt={pastel.nombre} 
                   fill
                   className="object-cover"
@@ -38,9 +30,9 @@ export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaP
               </div>
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800">{pastel.nombre}</h3>
-                <p className="text-gray-600 mt-2">{pastel.descripcion}</p>
+                <p className="text-gray-600 mt-2">{pastel.descripcion || ''}</p>
                 <div className="mt-4 flex justify-between items-center">
-                  <span className="text-pink-600 font-bold">${pastel.precio}</span>
+                  <span className="text-pink-600 font-bold">${Number(pastel.precio)}</span>
                   <button 
                     onClick={() => agregarAlCarrito(pastel)}
                     className="bg-pink-600 text-white px-4 py-2 rounded-full hover:bg-pink-700 transition-colors"
@@ -62,7 +54,7 @@ export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaP
             <div key={pastel.id} className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
               <div className="relative w-full h-48">
                 <Image 
-                  src={pastel.imagen} 
+                  src={pastel.imagen || '/placeholder.jpg'} 
                   alt={pastel.nombre} 
                   fill
                   className="object-cover"
@@ -70,9 +62,9 @@ export function ProductosLista({ pasteles, pastelesDestacados }: ProductosListaP
               </div>
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800">{pastel.nombre}</h3>
-                <p className="text-gray-600 mt-2">{pastel.descripcion}</p>
+                <p className="text-gray-600 mt-2">{pastel.descripcion || ''}</p>
                 <div className="mt-4 flex justify-between items-center">
-                  <span className="text-pink-600 font-bold">${pastel.precio}</span>
+                  <span className="text-pink-600 font-bold">${Number(pastel.precio)}</span>
                   <button 
                     onClick={() => agregarAlCarrito(pastel)}
                     className="bg-pink-600 text-white px-4 py-2 rounded-full hover:bg-pink-700 transition-colors"

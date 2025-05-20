@@ -3,10 +3,17 @@
 import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
+interface Favorito {
+  id: number;
+  nombre: string;
+  precio: number;
+  imagen: string;
+}
+
 interface FavoritosLateralProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  favoritos: any[];
+  favoritos: Favorito[];
   onEliminarFavorito: (id: number) => void;
 }
 

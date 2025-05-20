@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { X, CreditCard, MapPin, Calendar } from 'lucide-react';
+import { X, CreditCard, MapPin } from 'lucide-react';
 import { useCarrito } from '@/context/CarritoContext';
 
 interface CheckoutFormProps {
