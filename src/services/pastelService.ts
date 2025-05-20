@@ -1,12 +1,13 @@
 import { prisma } from '@/lib/prisma';
-import { Pastel } from '@prisma/client';
+import type { pastel } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 export const pastelService = {
   // Obtener todos los pasteles
   async getAllPasteles() {
     return await prisma.pastel.findMany({
       orderBy: {
-        createdAt: 'desc'
+        id: 'desc'
       }
     });
   },
@@ -18,7 +19,7 @@ export const pastelService = {
         destacado: true
       },
       orderBy: {
-        createdAt: 'desc'
+        id: 'desc'
       }
     });
   },
@@ -31,14 +32,14 @@ export const pastelService = {
   },
 
   // Crear un nuevo pastel
-  async createPastel(data: Omit<Pastel, 'id' | 'createdAt' | 'updatedAt'>) {
+  async createPastel(data: Omit<pastel, 'id' | 'createdAt' | 'updatedAt'>) {
     return await prisma.pastel.create({
       data
     });
   },
 
   // Actualizar un pastel
-  async updatePastel(id: number, data: Partial<Pastel>) {
+  async updatePastel(id: number, data: Partial<pastel>) {
     return await prisma.pastel.update({
       where: { id },
       data
@@ -57,9 +58,8 @@ export const pastelService = {
     return await prisma.pastel.findMany({
       where: {
         OR: [
-          { nombre: { contains: term, mode: 'insensitive' } },
-          { descripcion: { contains: term, mode: 'insensitive' } },
-          { etiquetas: { hasSome: [term] } }
+          { nombre: { contains: term } },
+          { descripcion: { contains: term } }
         ]
       }
     });
