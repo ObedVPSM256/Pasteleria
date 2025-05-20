@@ -30,16 +30,14 @@ export const pedidoService = {
   },
 
   // Actualizar estado del pedido
-  async updatePedidoEstado(id: number, estado: string) {
-    // This method is not provided in the original file or the new implementation
-    // It's assumed to exist as it's called in the original file
-    // Implementation needed
+  async updatePedidoEstado(pedidoId: number, nuevoEstado: string) {
+    const response = await api.patch(`/pedidos/${pedidoId}/estado`, { estado: nuevoEstado });
+    return response.data;
   },
 
   // Obtener todos los pedidos (para administradores)
   async getAllPedidos() {
-    // This method is not provided in the original file or the new implementation
-    // It's assumed to exist as it's called in the original file
-    // Implementation needed
+    const response = await api.get('/pedidos');
+    return response.data;
   }
 }; 

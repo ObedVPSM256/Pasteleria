@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ShoppingBag, X, Plus, Minus, CreditCard } from 'lucide-react';
-import { Pastel } from '@/app/dulcesdelicias/page';
 import { useCarrito } from '@/context/CarritoContext';
 
 interface CarritoLateralProps {
@@ -13,7 +12,6 @@ interface CarritoLateralProps {
 
 export default function CarritoLateral({ isOpen, setIsOpen }: CarritoLateralProps) {
   const { carrito, eliminarDelCarrito, actualizarCantidad } = useCarrito();
-  const [checkoutAbierto, setCheckoutAbierto] = useState(false);
   
   // Si el panel no está abierto, no renderizar nada
   if (!isOpen) return null;
@@ -128,10 +126,7 @@ export default function CarritoLateral({ isOpen, setIsOpen }: CarritoLateralProp
       {carrito.length > 0 && (
         <div className="p-4 border-t border-gray-200">
           <button 
-            onClick={() => {
-              setIsOpen(false);
-              setCheckoutAbierto(true);
-            }}
+            onClick={() => setIsOpen(false)}
             className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-3 rounded-full font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2"
           >
             <CreditCard size={20} />

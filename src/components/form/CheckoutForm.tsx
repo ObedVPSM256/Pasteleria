@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { X, CreditCard, MapPin } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useCarrito } from '@/context/CarritoContext';
 
 interface CheckoutFormProps {
@@ -10,7 +10,7 @@ interface CheckoutFormProps {
 }
 
 export default function CheckoutForm({ isOpen, setIsOpen }: CheckoutFormProps) {
-  const { carrito, limpiarCarrito } = useCarrito();
+  const { limpiarCarrito } = useCarrito();
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
