@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+body {
+  background-image: linear-gradient(rgba(145, 142, 142, 0.5), rgba(85, 84, 84, 0.5)), url("/img/fondo.jpg");
+  background-size: cover; /* Mejor que 100% auto para cubrir toda el área */
+  background-attachment: fixed; /* Fija la imagen de fondo */
+  background-repeat: no-repeat;
+  margin: 0;
+  min-height: 100vh; /* Altura mínima igual al viewport */
+  /* overflow: hidden; */ /* Elimina esta línea para permitir scroll */
+}

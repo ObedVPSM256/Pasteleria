@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pastel {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  precio      Float
+  imagen      String
+  destacado   Boolean  @default(false)
+  etiquetas   String[]
+  calificacion Float   @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  pedidos     PedidoItem[]
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  email     String   @unique
+  password  String
+  direccion String?
+  telefono  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pedidos   Pedido[]
+}
+
+model Pedido {
+  id            Int      @id @default(autoincrement())
+  usuarioId     Int
+  usuario       Usuario  @relation(fields: [usuarioId], references: [id])
+  estado        String   @default("pendiente") // pendiente, confirmado, enviado, entregado
+  total         Float
+  direccionEnvio String
+  instrucciones String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  items         PedidoItem[]
+}
+
+model PedidoItem {
+  id        Int      @id @default(autoincrement())
+  pedidoId  Int
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
+  pastelId  Int
+  pastel    Pastel   @relation(fields: [pastelId], references: [id])
+  cantidad  Int
+  precio    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
