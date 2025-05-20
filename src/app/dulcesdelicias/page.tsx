@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from 'react';
-import { ShoppingBag, Heart, Search, ChevronDown, Filter, X, Star, SlidersHorizontal } from 'lucide-react';
+import { ShoppingBag, Heart, Search, ChevronDown, X, Star, SlidersHorizontal } from 'lucide-react';
 import Sidebar from '@/components/form/sidebar';
 import Image from 'next/image';
 import CarritoLateral from '@/components/form/CarritoLateral';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Sidebar from '@/components/form/sidebar';
-import { TrendingUp, DollarSign, ShoppingCart, Users, Package, Star } from 'lucide-react';
+import { DollarSign, ShoppingCart, Users, Package, Star } from 'lucide-react';
 
 const Estadisticas = () => {
   // Datos de ejemplo

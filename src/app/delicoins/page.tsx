@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Sidebar from '@/components/form/sidebar';
-import { Gift, Star, History, ChevronRight, Clock, CheckCircle } from 'lucide-react';
+import { Gift, Star, ChevronRight, Clock, CheckCircle } from 'lucide-react';
 
 interface Transaction {
   id: string;
